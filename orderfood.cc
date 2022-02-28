@@ -96,6 +96,7 @@ main (int argc, char *argv[])
         stack.Install (csmaNodes);
           stack.Install (wifiApNode);
           stack.Install (wifiStaNodes);
+
    Ipv4AddressHelper address;
 
      address.SetBase ("10.1.1.0", "255.255.255.0");
@@ -107,8 +108,10 @@ main (int argc, char *argv[])
      csmaInterfaces = address.Assign (csmaDevices);
 
      address.SetBase ("10.1.3.0", "255.255.255.0");
-     address.Assign (staDevices);
-     address.Assign (apDevices);
+     Ipv4InterfaceContainer staInterface;
+     staInterface = address.Assign (staDevices);
+     Ipv4InterfaceContainer ApInterface;
+         ApInterface = address.Assign (apDevices);
 
      MobilityHelper mobility;
 
@@ -121,7 +124,7 @@ main (int argc, char *argv[])
                                       "LayoutType", StringValue ("RowFirst"));
     //bug detected here
        mobility.SetMobilityModel ("ns3::RandomWalk2dMobilityModel",
-                                "Bounds", RectangleValue (Rectangle (-20,20, -20, 20)));
+                                "Bounds", RectangleValue (Rectangle (-50,50, -50, 50)));
        mobility.Install (wifiStaNodes);
 
        mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
@@ -133,7 +136,8 @@ main (int argc, char *argv[])
        serverApps.Start (Seconds (1.0));
        serverApps.Stop (Seconds (10.0));
 
-       UdpEchoClientHelper echoClient (csmaInterfaces.GetAddress (3), 9);
+
+       UdpEchoClientHelper echoClient (csmaInterfaces.GetAddress (2), 9);
        echoClient.SetAttribute ("MaxPackets", UintegerValue (1));
        echoClient.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
        echoClient.SetAttribute ("PacketSize", UintegerValue (1024));
@@ -143,9 +147,9 @@ main (int argc, char *argv[])
        clientApps.Stop (Seconds (10.0));
 
        Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
-       Simulator::Stop(Seconds(3));
+       Simulator::Stop(Seconds(7));
 
-  AnimationInterface anim("oktestzx.xml");
+  AnimationInterface anim("orderfood.xml");
       anim.SetConstantPosition(p2pnode.Get(0), 30.0, 10.0);
       anim.SetConstantPosition(p2pnode.Get(1), 50.0, 10.0);
       anim.SetConstantPosition(csmaNodes.Get(3), 60.0, 20.0);
@@ -154,6 +158,12 @@ main (int argc, char *argv[])
 
 
 
+AsciiTraceHelper ascii;
+Ptr<OutputStreamWrapper> stream = ascii.CreateFileStream("foodorder.tr");
+//Check p2p//
+pointToPoint.EnableAsciiAll(stream);
+//checkCsma// csma.EnableAsciiAll(stream);
+//checkWifi//phy.EnableAsciiAll(stream);
 
   Simulator::Run ();
   Simulator::Destroy ();
