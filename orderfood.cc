@@ -147,7 +147,7 @@ main (int argc, char *argv[])
        clientApps.Stop (Seconds (10.0));
 
        Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
-       Simulator::Stop(Seconds(7));
+       Simulator::Stop(Seconds(3));
 
   AnimationInterface anim("orderfood.xml");
       anim.SetConstantPosition(p2pnode.Get(0), 30.0, 10.0);
@@ -159,11 +159,18 @@ main (int argc, char *argv[])
 
 
 AsciiTraceHelper ascii;
-Ptr<OutputStreamWrapper> stream = ascii.CreateFileStream("foodorder.tr");
+Ptr<OutputStreamWrapper> stream = ascii.CreateFileStream("foodorderP2p.tr");
 //Check p2p//
 pointToPoint.EnableAsciiAll(stream);
-//checkCsma// csma.EnableAsciiAll(stream);
-//checkWifi//phy.EnableAsciiAll(stream);
+AsciiTraceHelper ascii2;
+Ptr<OutputStreamWrapper> streamc = ascii2.CreateFileStream("foodorderCsma.tr");
+csma.EnableAsciiAll(streamc);
+
+//checkCsma//
+AsciiTraceHelper ascii3;
+Ptr<OutputStreamWrapper> streamw = ascii3.CreateFileStream("foodorderWifi.tr");
+//checkWifi//
+phy.EnableAsciiAll(streamw);
 
   Simulator::Run ();
   Simulator::Destroy ();
