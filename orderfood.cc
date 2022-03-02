@@ -173,25 +173,24 @@ main (int argc, char *argv[])
        ApplicationContainer serverApps = echoServer.Install (csmaNodes.Get (0));
 
        serverApps.Start (Seconds (1));
-       serverApps.Stop (Seconds (10.0));
+       serverApps.Stop (Seconds (30.0));
 
        ApplicationContainer serverApps2 = echoServer2.Install (csmaNodes.Get (1));
 
        serverApps2.Start (Seconds (1));
-       serverApps2.Stop (Seconds (10.0));
+       serverApps2.Stop (Seconds (30.0));
 
               ApplicationContainer serverApps3 = echoServer3.Install (csmaNodes.Get (2));
                      serverApps3.Start (Seconds (1));
-                     serverApps3.Stop (Seconds (10.0));
+                     serverApps3.Stop (Seconds (30.0));
 
                      ApplicationContainer serverApps4 = echoServer4.Install (wifiStaNodes.Get (0));
-                                          serverApps4.Start (Seconds (0.5));
-                                          serverApps4.Stop (Seconds (10.0));
-
-                      ApplicationContainer serverApps5 = echoServer5.Install (wifiStaNodes.Get (1));
-                                       serverApps5.Start (Seconds (0.5));
-                                       serverApps5.Stop (Seconds (10.0));
-
+                                          serverApps4.Start (Seconds (2));
+                                          serverApps4.Stop (Seconds (30.0));
+//
+//                      ApplicationContainer serverApps5 = echoServer5.Install (wifiStaNodes.Get (1));
+//                                       serverApps5.Start (Seconds (0.5));
+//                                       serverApps5.Stop (Seconds (30.0));
 
 
 
@@ -199,45 +198,50 @@ main (int argc, char *argv[])
        echoClient.SetAttribute ("MaxPackets", UintegerValue (1));
        echoClient.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
        echoClient.SetAttribute ("PacketSize", UintegerValue (1024));
-
+//
        UdpEchoClientHelper echoClient2 (csmaInterfaces.GetAddress (1), 10);
               echoClient2.SetAttribute ("MaxPackets", UintegerValue (1));
               echoClient2.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
-              echoClient2.SetAttribute ("PacketSize", UintegerValue (1024));
+              echoClient2.SetAttribute ("PacketSize", UintegerValue (1025));
 
-        UdpEchoClientHelper echoClient3 (csmaInterfaces.GetAddress (3), 11);
+        UdpEchoClientHelper echoClient3(csmaInterfaces.GetAddress (2), 11);
                      echoClient3.SetAttribute ("MaxPackets", UintegerValue (1));
                      echoClient3.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
-                     echoClient3.SetAttribute ("PacketSize", UintegerValue (1024));
+                     echoClient3.SetAttribute ("PacketSize", UintegerValue (1026));
   UdpEchoClientHelper echoClient4 (staInterface.GetAddress (0), 12);
-                                          echoClient.SetAttribute ("MaxPackets", UintegerValue (1));
-                                          echoClient.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
-                                          echoClient.SetAttribute ("PacketSize", UintegerValue (10000));
-        UdpEchoClientHelper echoClient5 (staInterface.GetAddress (1), 12);
+                                          echoClient4.SetAttribute ("MaxPackets", UintegerValue (1));
+                                          echoClient4.SetAttribute ("Interval", TimeValue (Seconds (0.0)));
+                                          echoClient4.SetAttribute ("PacketSize", UintegerValue (10000));
+        UdpEchoClientHelper echoClient5 (staInterface.GetAddress (1), 13);
                            echoClient5.SetAttribute ("MaxPackets", UintegerValue (1));
                            echoClient5.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
-                           echoClient5.SetAttribute ("PacketSize", UintegerValue (10000));
+                           echoClient5.SetAttribute ("PacketSize", UintegerValue (11000));
 
 
-       ApplicationContainer clientApps = echoClient.Install (p2pnode.Get (0));
-
-       clientApps.Start (Seconds (0.8));
-       clientApps.Stop (Seconds (10.0));
-       ApplicationContainer clientApps2 = echoClient2.Install (p2pnode.Get (0));
-          clientApps2.Start (Seconds (0.82));
-          clientApps2.Stop (Seconds (10.0));
-          ApplicationContainer clientApps3 = echoClient3.Install (p2pnode.Get (0));
-             clientApps3.Start (Seconds (0.83));
-             clientApps3.Stop (Seconds (10.0));
-         ApplicationContainer clientApps4 = echoClient4.Install (p2pnode.Get (0));
-                          clientApps4.Start(Seconds (0.2));
-                          clientApps4.Stop (Seconds (10.0));
-            ApplicationContainer clientApps5 = echoClient5.Install (p2pnode.Get (0));
-                            clientApps5.Start(Seconds (0.3));
-                            clientApps5.Stop (Seconds (10.0));
+//       ApplicationContainer clientApps = echoClient.Install (p2pnode.Get (0));
+//       clientApps.Start (Seconds (2));
+//       clientApps.Stop (Seconds (30.0));
+//       ApplicationContainer clientApps2 = echoClient2.Install (p2pnode.Get (0));
+//          clientApps2.Start (Seconds (3));
+//          clientApps2.Stop (Seconds (30.0));
+//          ApplicationContainer clientApps3 = echoClient3.Install (p2pnode.Get (0));
+//             clientApps3.Start (Seconds (4));
+//             clientApps3.Stop (Seconds (30.0));
+         ApplicationContainer clientApps4 = echoClient4.Install (wifiApNode.Get (0));
+                          clientApps4.Start(Seconds (2));
+                          clientApps4.Stop (Seconds (30.0));
+            ApplicationContainer clientApps5 = echoClient5.Install (wifiApNode.Get (0));
+                            clientApps5.Start(Seconds (2));
+                            clientApps5.Stop (Seconds (30.0));
+//       ApplicationContainer clientApps4 = echoClient4.Install (wifiStaNodes.Get (0));
+//                                  clientApps4.Start(Seconds (0.5));
+//                                  clientApps4.Stop (Seconds (30.0));
+//        ApplicationContainer clientApps5 = echoClient5.Install (wifiStaNodes.Get (1));
+//              clientApps5.Start(Seconds (1));
+//              clientApps5.Stop (Seconds (30.0));
 
        Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
-       Simulator::Stop(Seconds(10));
+       Simulator::Stop(Seconds(30));
 
   AnimationInterface anim("orderfood.xml");
       anim.SetConstantPosition(p2pnode.Get(0), 30.0, 10.0);
